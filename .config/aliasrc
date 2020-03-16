@@ -1,0 +1,21 @@
+alias utility='cd ~/BASEMENT/utility && make'
+alias arriva='cd ~/BASEMENT/arriva_server/server && make'
+alias bps='cd ~/BASEMENT/BPS && make'
+alias pub='cd ~/BASEMENT/publikator_server/ && make'
+alias home='cd ~'
+alias pull='python ~/BASEMENT/update_all.py'
+alias getpass='python ~/BASEMENT/utility/enc.py --get -l'
+alias enc='python ~/BASEMENT/utility/enc.py'
+alias dc='docker-compose'
+alias e='exit'
+alias killdocker='docker kill $(docker ps -q)'
+alias ls='ls --color=auto'
+alias ll='ls -l'
+alias la='ls -A'
+alias l='ls'
+alias py='python'
+alias ipy='ipython'
+#alias vim='nvim'
+alias f="firefox"
+alias netflix="firefox netflix.com"
+alias c="chromium"
