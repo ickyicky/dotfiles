@@ -8,6 +8,9 @@ ZSH_SYNTAX_REPO="https://github.com/zsh-users/zsh-syntax-highlighting.git"
 # lookup for distro info
 DISTRO=`awk '!/=/ {print toupper($1)}' /etc/*-release | head --lines 1 || (sw_vers -productVersion && echo "MACOS")`
 
+# current user
+CURRENT_USER=${USER}
+
 if [ "$DISTRO" == "MACOS" ]
 then
 	PKGMAN="brew install"
@@ -51,6 +54,10 @@ do
 	DESTINATION=~/.`echo "${SOURCE}" | cut -d "/" -f "2-"`
 	cp ${SOURCE} ${DESTINATION} -rf
 done
+
+# set zsh as default shell, sometimes (on CentOS 8 theres no chsh) so we need to run usermod instead
+ZSH_PATH=`which zsh`
+chsh -s ${ZSH_PATH} || sudo usermod --shell ${ZSH_PATH} ${CURRENT_USER}
 
 # clone vundle vim plugin and install all plugins
 git clone ${VUNDLE_REPO} ~/.vim/bundle/Vundle.vim

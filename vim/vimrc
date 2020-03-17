@@ -1,42 +1,19 @@
-" Basic keybindings:
-" crtl + n      - opens nerd tree. Opening files from tree:
-"                o - opens file
-"                i - open vertically
-"                s - opens horizontally
-" crtl + hjkl   - split navigation
-" space         - folds level
-" :sp || :vs    - open in layout (vert and horizon) 
-" ls            - list buffers
-" b             - switch to buffer
-" bd            - delete buffer
-" crtl + g      - goto definition
-" v             - select
-" V             - select lines
-" crtl - v      - select rectangles
-" d             - cut
-" y             - copy
-" P             - paste before cursor
-" p             - paste after cursor
+" Doman vimrc 
 
-
-set nocompatible              " required
-set encoding=utf-8
-set number relativenumber
-set clipboard=unnamedplus
-filetype off                  " required
+set nocompatible              " required by Vundle
+set encoding=utf-8            " for better polish letters
+set number relativenumber     " relative number - gamechanger
+set clipboard=unnamedplus     " to yank into clipboard easily
+filetype off                  " required by Vundle
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
-" add all your plugins here (note older versions of Vundle
-" used Bundle instead of Plugin)
+" add all your plugins here
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'sainnhe/edge'
 Plugin 'preservim/nerdtree'
@@ -52,18 +29,9 @@ filetype plugin indent on    " required
 set splitbelow
 set splitright
 
-" Moving between splits
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-
 " Enable folding
 set foldmethod=indent
 set foldlevel=99
-
-" Enable folding with the spacebar
-nnoremap <space> za
 
 " PEP8 indent
 au BufNewFile,BufRead *.py
@@ -83,10 +51,10 @@ au BufNewFile,BufRead *.js, *.html, *.css, *.scss
 
 au BufRead, BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 
-" better fold and ALE config
-
+" better fold
 let g:SimpylFold_docstring_preview=1
 
+" ALE config
 let g:ale_linters = {
 			\ 'python': ['pyls', 'flake8'],
 			\}
@@ -106,34 +74,43 @@ let g:ale_fixers = {
 let g:ale_completion_enabled = 1
 let g:ale_completion_tsserver_autoimport = 1
 
+" set default completion function to ale's one
+set omnifunc=ale#completion#OmniFunc
+
+" Python syntax highlighting
+let python_highlight_all=1
+syntax on
+
+" Theme config
+set termguicolors
+colorscheme base16-ocean
+
+" nerdtree settings
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" ignoce *.pyc
+let NERDTreeIgnore=['\.pyc$', '\~$']
+
+" KEYBINDINGS AND MAPS
+
+" keybinding for nerdtree
+map <C-n> :NERDTreeToggle<CR>
+
+" ALE key mapping
 nmap <silent> <F5> <Plug>(ale_previous_wrap)
 nmap <silent> <C-F5> <Plug>(ale_next_wrap)
 map <C-G> :ALEGoToDefinition<CR>
 map <C-F11> :ALEGoToDefinitionInSplit<CR>
 map <C-F12> :ALEGoToDefinitionInVSplit<CR>
-set omnifunc=ale#completion#OmniFunc
 
-" Python syntax
+" Enable folding with the spacebar
+nnoremap <space> za
 
-let python_highlight_all=1
-syntax on
+" Moving between splits
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
 
-" Theme config
-" set termguicolors
-" set background=dark
-" set t_Co=256
-" let g:edge_style = 'proton'
-"   
-" colorscheme edge
-
-set termguicolors
-colorscheme base16-ocean
-
-map <C-n> :NERDTreeToggle<CR>
- 
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
