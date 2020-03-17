@@ -7,7 +7,11 @@ ZSH_SYNTAX_REPO="https://github.com/zsh-users/zsh-syntax-highlighting.git"
 BREW_SCRIPT_LINK="https://raw.githubusercontent.com/Homebrew/install/master/install.sh"
 
 # lookup for distro info
-DISTRO=`awk '!/=/ {print toupper($1)}' /etc/*-release | head --lines 1 || (sw_vers -productVersion > /dev/null && echo "MACOS")`
+DISTRO=`awk '!/=/ {print toupper($1)}' /etc/*-release | head --lines 1`
+if [[ -z "$DISTRO" ]]
+then
+	DISTRO=`lsb_release -a | awk '/Description/ {print toupper($2)}'`
+fi
 
 # current user
 CURRENT_USER=${USER}
