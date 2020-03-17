@@ -27,18 +27,23 @@ do
 done
 
 # distro dependent things
-if [ "$DISTRO" == "MACOS" ]
+if [[ "$DISTRO" == "MACOS" ]]
 then
 	PKGMAN="brew install"
-	# if not present, install brew
 	ADDITIONAL_PACKAGES="homebrew/cask/iterm2"
+	# if not present, install brew
 	brew --help || /bin/bash -c "$(curl -fsSL ${BREW_SCRIPT_LINK})"
-elif [ "$DISTRO" == "MANJARO" || "$DISTRO" == "ARCH" ]
+elif [[ "$DISTRO" == "MANJARO" ]] || [[ "$DISTRO" == "ARCH" ]]
 then
 	PKGMAN="sudo pacman -S --noconfirm"
-elif [ "$DISTRO" == "CENTOS" || "$DISTRO" == "FEDORA" ]r
+elif [[ "$DISTRO" == "CENTOS" ]] || [[ "$DISTRO" == "FEDORA" ]]
 then
 	PKGMAN="sudo yum install -y"
+elif [[ "$DISTRO" == "DEBIAN" ]] || [[ "$DISTRO" == "UBUNTU" ]]
+then
+	PKGMAN="sudo apt-get install -y"
+	# also add python-neovim if you're planning on editing py2 code
+	ADDITIONAL_PACKAGES="python3-neovim"
 else
 	echo "Could not determine distribution. Result: ${DISTRO}"
 	exit 1
