@@ -16,18 +16,18 @@ fi
 # current user
 CURRENT_USER=${USER}
 
-# copy dotfiles
-for SOURCE in `find * -mindepth 1 -maxdepth 1 -not -path ".*/.*/*"`
+# prepare directories
+for SOURCE in `find * -mindepth 1 -type d -not -path ".*/.*/*"`
 do
         DESTINATION=~/.`echo "${SOURCE}" | cut -d "/" -f "2-"`
-        
-	if [ -d ${SOURCE} ]
-	then
-		DESTINATION=${DESTINATION}/
-		SOURCE=${SOURCE}/
-	fi
+        mkdir -p ${DESTINATION}
+done
 
-        cp -Rf ${SOURCE} ${DESTINATION}
+# copy dotfiles
+for SOURCE in `find * -mindepth 1 -type f -not -path ".*/.*/*"`
+do
+        DESTINATION=~/.`echo "${SOURCE}" | cut -d "/" -f "2-"`
+        cp -f ${SOURCE} ${DESTINATION}
 done
 
 # distro dependent things
@@ -67,8 +67,8 @@ do
 	${PKGMAN} ${PACKAGE}
 done
 
-# create cache for zsh and config direcotry (if not present)
-mkdir -p ~/.cache ~/.cache/zsh ~/.config
+# create cache for zsh
+mkdir -p ~/.cache ~/.cache/zsh
 
 # install zsh syntax
 git clone ${ZSH_SYNTAX_REPO} temp
