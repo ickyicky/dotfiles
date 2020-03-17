@@ -33,10 +33,10 @@ then
 	# if not present, install brew
 	ADDITIONAL_PACKAGES="homebrew/cask/iterm2"
 	brew --help || /bin/bash -c "$(curl -fsSL ${BREW_SCRIPT_LINK})"
-elif [ "$DISTRO" == "MANJARO" ]
+elif [ "$DISTRO" == "MANJARO" || "$DISTRO" == "ARCH" ]
 then
 	PKGMAN="sudo pacman -S --noconfirm"
-elif [ "$DISTRO" == "CENTOS" ]
+elif [ "$DISTRO" == "CENTOS" || "$DISTRO" == "FEDORA" ]r
 then
 	PKGMAN="sudo yum install -y"
 else
