@@ -39,7 +39,7 @@ do
 done
 
 # create cache for zsh and config direcotry (if not present)
-mkdir -f ~/.cache ~/.cache/zsh ~/.config
+mkdir -p ~/.cache ~/.cache/zsh ~/.config
 
 # install zsh syntax
 git clone ${ZSH_SYNTAX_REPO} temp
