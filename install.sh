@@ -7,11 +7,12 @@ ZSH_SYNTAX_REPO="https://github.com/zsh-users/zsh-syntax-highlighting.git"
 BREW_SCRIPT_LINK="https://raw.githubusercontent.com/Homebrew/install/master/install.sh"
 
 # lookup for distro info
-DISTRO=`awk '!/=/ {print toupper($1)}' /etc/*-release | head --lines 1 || (sw_vers -productVersion > None && echo "MACOS")`
+DISTRO=`awk '!/=/ {print toupper($1)}' /etc/*-release | head --lines 1 || (sw_vers -productVersion > /dev/null && echo "MACOS")`
 
 # current user
 CURRENT_USER=${USER}
 
+# copy dotfiles
 for SOURCE in `find * -mindepth 1 -maxdepth 1 -not -path ".*/.*/*"`
 do
         DESTINATION=~/.`echo "${SOURCE}" | cut -d "/" -f "2-"`
@@ -25,12 +26,12 @@ do
         cp -Rf ${SOURCE} ${DESTINATION}
 done
 
-exit
-
+# distro dependent things
 if [ "$DISTRO" == "MACOS" ]
 then
 	PKGMAN="brew install"
 	# if not present, install brew
+	ADDITIONAL_PACKAGES="homebrew/cask/iterm2"
 	brew --help || /bin/bash -c "$(curl -fsSL ${BREW_SCRIPT_LINK})"
 elif [ "$DISTRO" == "MANJARO" ]
 then
@@ -44,7 +45,8 @@ else
 fi
 
 # repos list
-PACKAGES="python3
+PACKAGES="${ADDITIONAL_PACKAGES}
+python3
 git
 neovim
 zsh
@@ -65,14 +67,6 @@ cd temp
 sudo make install
 cd ..
 rm -rf temp
-
-# copy configfiles
-for SOURCE in `find * -mindepth 1 -maxdepth 1 -not -path ".*/.*/*"`
-do
-	DESTINATION=~/.`echo "${SOURCE}" | cut -d "/" -f "2-"`
-	echo "${DESTINATION} from ${SOURCE}"
-	cp ${SOURCE} ${DESTINATION} -rf
-done
 
 # set zsh as default shell, sometimes (on CentOS 8 theres no chsh) so we need to run usermod instead
 ZSH_PATH=`which zsh`
