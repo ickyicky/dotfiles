@@ -19,7 +19,7 @@ then
 	PKGMAN="sudo pacman -S --noconfirm"
 elif [ "$DISTRO" == "CENTOS" ]
 then
-	PKGMAN="sudo yum install --yes"
+	PKGMAN="sudo yum install -y"
 else
 	echo "Could not determine distribution."
 	exit 1
