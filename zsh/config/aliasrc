@@ -15,7 +15,6 @@ alias la='ls -A'
 alias l='ls'
 alias py='python'
 alias ipy='ipython'
-alias vim='nvim'
 alias f="firefox"
 alias netflix="firefox netflix.com"
 alias c="chromium"

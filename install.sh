@@ -12,7 +12,7 @@ if [[ -z "$DISTRO" ]]
 then
 	DISTRO=`lsb_release -a | awk '/Description/ {print toupper($2)}'`
 fi
-
+echo "Recognized distro: ${DISTRO}"
 # current user
 CURRENT_USER=${USER}
 
@@ -49,7 +49,7 @@ then
 	# also add python-neovim if you're planning on editing py2 code
 	ADDITIONAL_PACKAGES="python3-neovim"
 else
-	echo "Could not determine distribution. Result: ${DISTRO}"
+	echo "${DISTRO} not supported"
 	exit 1
 fi
 
@@ -57,30 +57,33 @@ fi
 PACKAGES="${ADDITIONAL_PACKAGES}
 python3
 git
-neovim
 zsh
 "
 
 # install packages
 for PACKAGE in ${PACKAGES}
 do
-	${PKGMAN} ${PACKAGE}
+	echo "Installing ${PACKAGE}..."
+	${PKGMAN} ${PACKAGE} > /dev/null
 done
 
 # create cache for zsh
 mkdir -p ~/.cache ~/.cache/zsh
 
 # install zsh syntax
-git clone ${ZSH_SYNTAX_REPO} temp
+echo "Installing zsh syntax highlighting..."
+git clone ${ZSH_SYNTAX_REPO} temp > /dev/null 
 cd temp
-sudo make install
+sudo make install > /dev/null 
 cd ..
 rm -rf temp
 
 # set zsh as default shell, sometimes (on CentOS 8 theres no chsh) so we need to run usermod instead
+echo "Setting zsh as default shell..."
 ZSH_PATH=`which zsh`
 chsh -s ${ZSH_PATH} || sudo usermod --shell ${ZSH_PATH} ${CURRENT_USER}
 
 # clone vundle vim plugin and install all plugins
-git clone ${VUNDLE_REPO} ~/.vim/bundle/Vundle.vim
+echo "Installing Vundle"
+git clone ${VUNDLE_REPO} ~/.vim/bundle/Vundle.vim 2>/dev/null
 vim -c PluginInstall q
