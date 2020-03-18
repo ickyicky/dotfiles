@@ -8,9 +8,15 @@ BREW_SCRIPT_LINK="https://raw.githubusercontent.com/Homebrew/install/master/inst
 
 # lookup for distro info
 DISTRO=`awk '!/=/ {print toupper($1)}' /etc/*-release | head --lines 1`
+# on ubuntu this failed, i need compatibily with ALL OF THEM
 if [[ -z "$DISTRO" ]]
 then
 	DISTRO=`lsb_release -a | awk '/Description/ {print toupper($2)}'`
+fi
+# just for MACOS
+if [[ -z "$DISTRO" ]]
+then
+	DISTRO=`sw_vers | awk '/Mac/ {print toupper($2)}'`
 fi
 echo "Recognized distro: ${DISTRO}"
 # current user
@@ -31,7 +37,7 @@ do
 done
 
 # distro dependent things
-if [[ "$DISTRO" == "MACOS" ]]
+if [[ "$DISTRO" == "MAC" ]]
 then
 	PKGMAN="brew install"
 	ADDITIONAL_PACKAGES="homebrew/cask/iterm2"
