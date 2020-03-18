@@ -1,9 +1,13 @@
 #! /bin/bash
 #
 
+# settings
+FONT="SourceCodePro"
+
 # links 
 VUNDLE_REPO="https://github.com/VundleVim/Vundle.vim.git"
 ZSH_SYNTAX_REPO="https://github.com/zsh-users/zsh-syntax-highlighting.git"
+NERD_FONT_REPO="https://github.com/ryanoasis/nerd-fonts.git"
 BREW_SCRIPT_LINK="https://raw.githubusercontent.com/Homebrew/install/master/install.sh"
 
 # lookup for distro info
@@ -47,14 +51,13 @@ then
 elif [[ "$DISTRO" == "MANJARO" ]] || [[ "$DISTRO" == "ARCH" ]]
 then
 	PKGMAN="sudo pacman -S --noconfirm"
+	ADDITIONAL_PACKAGES="gvim"
 elif [[ "$DISTRO" == "CENTOS" ]] || [[ "$DISTRO" == "FEDORA" ]]
 then
 	PKGMAN="sudo yum install -y"
 elif [[ "$DISTRO" == "DEBIAN" ]] || [[ "$DISTRO" == "UBUNTU" ]]
 then
 	PKGMAN="sudo apt-get install -y"
-	# also add python-neovim if you're planning on editing py2 code
-	ADDITIONAL_PACKAGES="python3-neovim"
 else
 	echo "${DISTRO} not supported"
 	exit 1
@@ -82,6 +85,14 @@ echo "Installing zsh syntax highlighting..."
 git clone ${ZSH_SYNTAX_REPO} temp > /dev/null 
 cd temp
 sudo make install > /dev/null 
+cd ..
+rm -rf temp
+
+# install nerd font 
+echo "Installing nerd font..."
+git clone ${NERD_FONT_REPO} temp > /dev/null 
+cd temp
+./install.sh ${FONT} > /dev/null 
 cd ..
 rm -rf temp
 

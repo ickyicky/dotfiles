@@ -19,6 +19,7 @@ Plugin 'sainnhe/edge'
 Plugin 'preservim/nerdtree'
 Plugin 'dense-analysis/ale'
 Plugin 'chriskempson/base16-vim'
+Plugin 'ryanoasis/vim-devicons'
 " ...
 
 " All of your Plugins must be added before the following line
