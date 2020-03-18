@@ -11,8 +11,9 @@ NERD_FONT_REPO="https://github.com/ryanoasis/nerd-fonts.git"
 BREW_SCRIPT_LINK="https://raw.githubusercontent.com/Homebrew/install/master/install.sh"
 
 # lookup for distro info
-DISTRO=`awk '!/=/ {print toupper($1)}' /etc/*-release | head --lines 1`
-# on ubuntu this failed, i need compatibily with ALL OF THEM
+DISTRO=`awk -F "=| " '/ID_LIKE/ {print toupper($2)}' /etc/*-release | awk '{print $1}' | sed 's/"//g' | head --lines 1`
+
+# sometimes this can fail, but anyway we can always count on lsb_release
 if [[ -z "$DISTRO" ]]
 then
 	DISTRO=`lsb_release -a | awk '/Description/ {print toupper($2)}'`
@@ -52,7 +53,7 @@ elif [[ "$DISTRO" == "MANJARO" ]] || [[ "$DISTRO" == "ARCH" ]]
 then
 	PKGMAN="sudo pacman -S --noconfirm"
 	ADDITIONAL_PACKAGES="gvim"
-elif [[ "$DISTRO" == "CENTOS" ]] || [[ "$DISTRO" == "FEDORA" ]]
+elif [[ "$DISTRO" == "CENTOS" ]] || [[ "$DISTRO" == "FEDORA" ]] || [[ "${DISTRO}" == "RHEL" ]]
 then
 	PKGMAN="sudo yum install -y"
 elif [[ "$DISTRO" == "DEBIAN" ]] || [[ "$DISTRO" == "UBUNTU" ]]
@@ -88,13 +89,6 @@ sudo make install > /dev/null
 cd ..
 rm -rf temp
 
-# install nerd font 
-echo "Installing nerd font..."
-git clone ${NERD_FONT_REPO} temp > /dev/null 
-cd temp
-./install.sh ${FONT} > /dev/null 
-cd ..
-rm -rf temp
 
 # set zsh as default shell, sometimes (on CentOS 8 theres no chsh) so we need to run usermod instead
 echo "Setting zsh as default shell..."
@@ -105,3 +99,11 @@ chsh -s ${ZSH_PATH} || sudo usermod --shell ${ZSH_PATH} ${CURRENT_USER}
 echo "Installing Vundle"
 git clone ${VUNDLE_REPO} ~/.vim/bundle/Vundle.vim 2>/dev/null
 vim -c PluginInstall q
+
+# install nerd font, best way, but SOO inefficient... it downloads 6 gb...
+echo "Installing nerd font..."
+git clone ${NERD_FONT_REPO} temp > /dev/null 
+cd temp
+./install.sh ${FONT} > /dev/null 
+cd ..
+rm -rf temp
