@@ -46,13 +46,15 @@ if [[ "$DISTRO" == "MAC" ]]
 then
 	PKGMAN="brew install"
 	ADDITIONAL_PACKAGES="homebrew/cask/iterm2
-	macvim"
+	macvim
+	neovim"
 	# if not present, install brew
 	brew --help || /bin/bash -c "$(curl -fsSL ${BREW_SCRIPT_LINK})"
 elif [[ "$DISTRO" == "MANJARO" ]] || [[ "$DISTRO" == "ARCH" ]]
 then
 	PKGMAN="sudo pacman -S --noconfirm"
-	ADDITIONAL_PACKAGES="gvim"
+	ADDITIONAL_PACKAGES="neovim
+	xclip"
 elif [[ "$DISTRO" == "CENTOS" ]] || [[ "$DISTRO" == "FEDORA" ]] || [[ "${DISTRO}" == "RHEL" ]]
 then
 	PKGMAN="sudo yum install -y"

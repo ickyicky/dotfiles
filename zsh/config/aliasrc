@@ -13,6 +13,7 @@ alias ls='ls --color=auto'
 alias ll='ls -l'
 alias la='ls -A'
 alias l='ls'
+alias vim='nvim'
 alias py='python'
 alias ipy='ipython'
 alias f="firefox"

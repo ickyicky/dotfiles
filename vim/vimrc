@@ -96,6 +96,8 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let NERDTreeIgnore=['\.pyc$', '\~$']
 
 " KEYBINDINGS AND MAPS
+" <Ctrl-s> redraws the screen and removes any search highlighting.
+nnoremap <silent> <C-s> :nohl<CR><C-l>
 
 " keybinding for nerdtree
 map <C-n> :NERDTreeToggle<CR>
