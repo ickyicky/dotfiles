@@ -11,7 +11,7 @@ NERD_FONT_REPO="https://github.com/ryanoasis/nerd-fonts.git"
 BREW_SCRIPT_LINK="https://raw.githubusercontent.com/Homebrew/install/master/install.sh"
 
 # lookup for distro info
-DISTRO=`awk -F "=| " '/ID_LIKE/ {print toupper($2)}' /etc/*-release | awk '{print $1}' | sed 's/"//g' | head --lines 1`
+DISTRO=`awk -F "=| " '/ID/ {print toupper($2)}' /etc/*-release | awk '{print $1}' | sed 's/"//g' | head --lines 1`
 
 # sometimes this can fail, but anyway we can always count on lsb_release
 if [[ -z "$DISTRO" ]]
@@ -46,18 +46,17 @@ if [[ "$DISTRO" == "MAC" ]]
 then
 	PKGMAN="brew install"
 	ADDITIONAL_PACKAGES="homebrew/cask/iterm2
-	macvim
-	neovim"
+	macvim"
 	# if not present, install brew
 	brew --help || /bin/bash -c "$(curl -fsSL ${BREW_SCRIPT_LINK})"
 elif [[ "$DISTRO" == "MANJARO" ]] || [[ "$DISTRO" == "ARCH" ]]
 then
 	PKGMAN="sudo pacman -S --noconfirm"
-	ADDITIONAL_PACKAGES="neovim
-	xclip"
+	ADDITIONAL_PACKAGES="xclip"
 elif [[ "$DISTRO" == "CENTOS" ]] || [[ "$DISTRO" == "FEDORA" ]] || [[ "${DISTRO}" == "RHEL" ]]
 then
 	PKGMAN="sudo yum install -y"
+	ADDITIONAL_PACKAGES="python3-neovim"
 elif [[ "$DISTRO" == "DEBIAN" ]] || [[ "$DISTRO" == "UBUNTU" ]]
 then
 	PKGMAN="sudo apt-get install -y"
@@ -68,6 +67,7 @@ fi
 
 # repos list
 PACKAGES="${ADDITIONAL_PACKAGES}
+neovim
 python3
 git
 zsh
