@@ -20,6 +20,9 @@ Plugin 'preservim/nerdtree'
 Plugin 'dense-analysis/ale'
 Plugin 'chriskempson/base16-vim'
 Plugin 'ryanoasis/vim-devicons'
+
+" best autocomplete
+Bundle 'Valloric/YouCompleteMe'
 " ...
 
 " All of your Plugins must be added before the following line
@@ -72,12 +75,14 @@ let g:ale_fixers = {
 			\ 'yaml': ['prettier'],
 			\}
 
-let g:ale_completion_enabled = 1
-let g:ale_completion_tsserver_autoimport = 1
+" ale completion is really annoying
+let g:ale_completion_enabled = 0
+let g:ale_completion_tsserver_autoimport = 0
 let g:ale_set_highlights = 0
 
-" set default completion function to ale's one
-set omnifunc=ale#completion#OmniFunc
+" youcompleteme
+let g:ycm_autoclose_preview_window_after_completion=1
+map <C-g>  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 " Python syntax highlighting
 let python_highlight_all=1
@@ -105,9 +110,6 @@ map <C-n> :NERDTreeToggle<CR>
 " ALE key mapping
 nmap <silent> <F5> <Plug>(ale_previous_wrap)
 nmap <silent> <C-F5> <Plug>(ale_next_wrap)
-map <C-G> :ALEGoToDefinition<CR>
-map <C-F11> :ALEGoToDefinitionInSplit<CR>
-map <C-F12> :ALEGoToDefinitionInVSplit<CR>
 
 " Enable folding with the spacebar
 nnoremap <space> za

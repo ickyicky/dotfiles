@@ -45,8 +45,7 @@ done
 if [[ "$DISTRO" == "MAC" ]]
 then
 	PKGMAN="brew install"
-	ADDITIONAL_PACKAGES="homebrew/cask/iterm2
-	macvim"
+	ADDITIONAL_PACKAGES="macvim"
 	# if not present, install brew
 	brew --help || /bin/bash -c "$(curl -fsSL ${BREW_SCRIPT_LINK})"
 elif [[ "$DISTRO" == "MANJARO" ]] || [[ "$DISTRO" == "ARCH" ]]
