@@ -1,17 +1,21 @@
-alias utility='cd ~/BASEMENT/utility && make'
-alias arriva='cd ~/BASEMENT/arriva_server/server && make'
-alias bps='cd ~/BASEMENT/BPS && make'
-alias pub='cd ~/BASEMENT/publikator_server/ && make'
-alias home='cd ~'
-alias pull='python ~/BASEMENT/update_all.py'
-alias getpass='python ~/BASEMENT/utility/enc.py --get -l'
-alias enc='python ~/BASEMENT/utility/enc.py'
+# easy acces
+alias aliases='cat ~/.config/aliasrc'
+alias editalias='vim ~/.config/aliasrc'
+
+# just for security
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -i'
+
+# program shortcuts
 alias dc='docker-compose'
 alias e='exit'
+alias grep='grep --color=auto'
 alias killdocker='docker kill $(docker ps -q)'
-alias ls='ls --color=auto'
-alias ll='ls -l'
-alias la='ls -A'
+alias ls='exa --icons'
+alias ll='ls -lh'
+alias la='ls -a'
+alias lla='ls -lha'
 alias l='ls'
 alias vim='nvim'
 alias py='python'
@@ -19,3 +23,19 @@ alias ipy='ipython'
 alias f="firefox"
 alias netflix="firefox netflix.com"
 alias c="chromium"
+
+# Work
+alias work='cd ~/Projects/Work'
+alias util='cd ~/Projects/Work/utility && make'
+alias arr='cd ~/Projects/Work/arriva_server/server && make'
+alias bps='cd ~/Projects/Work/BPS && make'
+alias pub='cd ~/Projects/Work/publikator/'
+alias pubs='pub && cd publikator_server && make'
+alias pubo='pub && cd publikator_oracle && make'
+alias pubb='pub && cd publikator_bps && make'
+
+# Personal
+alias my='cd ~/Projects/Personal'
+
+# Studies
+alias stud='cd ~/Projects/Studies'

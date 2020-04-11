@@ -70,7 +70,13 @@ neovim
 python3
 git
 zsh
+exa
+cmake
 "
+
+PIP_PACKAGES="pynvim
+black
+ipython"
 
 # install packages
 for PACKAGE in ${PACKAGES}
@@ -78,6 +84,14 @@ do
 	echo "Installing ${PACKAGE}..."
 	${PKGMAN} ${PACKAGE} > /dev/null
 done
+
+# install pip packages
+for PACKAGE in ${PIP_PACKAGES}
+do
+	echo "Installing ${PACKAGE}..."
+	sudo pip3 ${PACKAGE} > /dev/null
+done
+
 
 # create cache for zsh
 mkdir -p ~/.cache ~/.cache/zsh
@@ -108,3 +122,9 @@ cd temp
 ./install.sh ${FONT} > /dev/null 
 cd ..
 rm -rf temp
+
+# install ymcd
+.vim/bundle/YouCompleteMe/install.py
+
+# create Projects directories
+mkdir -p ~/Projects/Personal ~/Projects/Work ~/Projects/Studies
