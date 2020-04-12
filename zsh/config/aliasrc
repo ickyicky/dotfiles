@@ -2,16 +2,20 @@
 alias aliases='cat ~/.config/aliasrc'
 alias editalias='vim ~/.config/aliasrc'
 
-# just for security
-alias cp='cp -i'
-alias mv='mv -i'
-alias rm='rm -i'
+# just for security and for fun because i have typing -rf every time
+alias ccp='cp -rf'
+alias cp='cp -riv'
+alias mmv='mv -rf'
+alias mv='mv -riv'
+alias rrm='rm -rf'
+alias rm='rm -rIv'
 
 # program shortcuts
 alias dc='docker-compose'
 alias e='exit'
-alias grep='grep --color=auto'
+alias grep='grep --color=auto -r'
 alias killdocker='docker kill $(docker ps -q)'
+alias cleardocker='docker rmi $(docker images -q)'
 alias ls='exa --icons -g'
 alias ll='ls -lh'
 alias la='ls -a'

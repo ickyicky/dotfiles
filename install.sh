@@ -41,90 +41,120 @@ do
         cp -f ${SOURCE} ${DESTINATION}
 done
 
-# distro dependent things
-if [[ "$DISTRO" == "MAC" ]]
+echo "Dotfiles copied, would you also like to install depending packages? (y/n)"
+read RESPONSE
+
+if [[ "$RESPONSE" == "Y" ]] || [[ "$RESPONSE" == "y" ]]
 then
-	PKGMAN="brew install"
-	ADDITIONAL_PACKAGES="macvim"
-	# if not present, install brew
-	brew --help || /bin/bash -c "$(curl -fsSL ${BREW_SCRIPT_LINK})"
-elif [[ "$DISTRO" == "MANJARO" ]] || [[ "$DISTRO" == "ARCH" ]]
-then
-	PKGMAN="sudo pacman -S --noconfirm"
-	ADDITIONAL_PACKAGES="xclip"
-elif [[ "$DISTRO" == "CENTOS" ]] || [[ "$DISTRO" == "FEDORA" ]] || [[ "${DISTRO}" == "RHEL" ]]
-then
-	PKGMAN="sudo yum install -y"
-	ADDITIONAL_PACKAGES="python3-neovim"
-elif [[ "$DISTRO" == "DEBIAN" ]] || [[ "$DISTRO" == "UBUNTU" ]]
-then
-	PKGMAN="sudo apt-get install -y"
-else
-	echo "${DISTRO} not supported"
-	exit 1
+	# distro dependent stuff like additional packages, pkg manager
+	if [[ "$DISTRO" == "MAC" ]]
+	then
+		PKGMAN="brew install"
+		ADDITIONAL_PACKAGES="macvim"
+		# if not present, install brew
+		brew --help || /bin/bash -c "$(curl -fsSL ${BREW_SCRIPT_LINK})"
+	elif [[ "$DISTRO" == "MANJARO" ]] || [[ "$DISTRO" == "ARCH" ]] || [[ "$DISTRO" == "MANJAROLINUX" ]]
+	then
+		PKGMAN="sudo pacman -S --noconfirm"
+		ADDITIONAL_PACKAGES="xclip"
+	elif [[ "$DISTRO" == "CENTOS" ]] || [[ "$DISTRO" == "FEDORA" ]] || [[ "${DISTRO}" == "RHEL" ]]
+	then
+		PKGMAN="sudo yum install -y"
+		ADDITIONAL_PACKAGES="python3-neovim"
+	elif [[ "$DISTRO" == "DEBIAN" ]] || [[ "$DISTRO" == "UBUNTU" ]]
+	then
+		PKGMAN="sudo apt-get install -y"
+	else
+		echo "${DISTRO} not recognized, specify package manager yourself:"
+		read PKGMAN
+	fi
+	
+	# repos list
+	PACKAGES="${ADDITIONAL_PACKAGES}
+	neovim
+	python3
+	git
+	zsh
+	exa
+	cmake
+	"
+	
+	PIP_PACKAGES="pynvim
+	black
+	ipython"
+	
+	# install packages
+	for PACKAGE in ${PACKAGES}
+	do
+		echo "Installing ${PACKAGE}..."
+		${PKGMAN} ${PACKAGE} > /dev/null
+	done
+	
+	# install pip packages
+	for PACKAGE in ${PIP_PACKAGES}
+	do
+		echo "Installing ${PACKAGE}..."
+		sudo pip3 ${PACKAGE} > /dev/null
+	done
 fi
-
-# repos list
-PACKAGES="${ADDITIONAL_PACKAGES}
-neovim
-python3
-git
-zsh
-exa
-cmake
-"
-
-PIP_PACKAGES="pynvim
-black
-ipython"
-
-# install packages
-for PACKAGE in ${PACKAGES}
-do
-	echo "Installing ${PACKAGE}..."
-	${PKGMAN} ${PACKAGE} > /dev/null
-done
-
-# install pip packages
-for PACKAGE in ${PIP_PACKAGES}
-do
-	echo "Installing ${PACKAGE}..."
-	sudo pip3 ${PACKAGE} > /dev/null
-done
-
 
 # create cache for zsh
 mkdir -p ~/.cache ~/.cache/zsh
 
-# install zsh syntax
-echo "Installing zsh syntax highlighting..."
-git clone ${ZSH_SYNTAX_REPO} temp > /dev/null 
-cd temp
-sudo make install > /dev/null 
-cd ..
-rm -rf temp
+echo "Install zsh syntax highlighting? (y/n)"
+read RESPONSE
+
+if [[ "$RESPONSE" == "Y" ]] || [[ "$RESPONSE" == "y" ]]
+then
+	# install zsh syntax
+	echo "Installing zsh syntax highlighting..."
+	git clone ${ZSH_SYNTAX_REPO} temp > /dev/null 
+	cd temp
+	sudo make install > /dev/null 
+	cd ..
+	rm -rf temp
+fi
 
 
-# set zsh as default shell, sometimes (on CentOS 8 theres no chsh) so we need to run usermod instead
-echo "Setting zsh as default shell..."
-ZSH_PATH=`which zsh`
-chsh -s ${ZSH_PATH} || sudo usermod --shell ${ZSH_PATH} ${CURRENT_USER}
+echo "Set zsh as default shell? (y/n)"
+read RESPONSE
 
-# clone vundle vim plugin and install all plugins
-echo "Installing Vundle"
-git clone ${VUNDLE_REPO} ~/.vim/bundle/Vundle.vim 2>/dev/null
-vim -c PluginInstall q
+if [[ "$RESPONSE" == "Y" ]] || [[ "$RESPONSE" == "y" ]]
+then
+	# set zsh as default shell, sometimes (on CentOS 8 theres no chsh) so we need to run usermod instead
+	echo "Setting zsh as default shell..."
+	ZSH_PATH=`which zsh`
+	chsh -s ${ZSH_PATH} || sudo usermod --shell ${ZSH_PATH} ${CURRENT_USER} || echo "Setting zsh as default shell failed, do it yourself kiddo"
+fi
 
-# install nerd font, best way, but SOO inefficient... it downloads 6 gb...
-echo "Installing nerd font..."
-git clone ${NERD_FONT_REPO} temp > /dev/null 
-cd temp
-./install.sh ${FONT} > /dev/null 
-cd ..
-rm -rf temp
 
-# install ymcd
-.vim/bundle/YouCompleteMe/install.py
+echo "Install Vundle? (y/n)"
+read RESPONSE
+
+if [[ "$RESPONSE" == "Y" ]] || [[ "$RESPONSE" == "y" ]]
+then
+	# clone vundle vim plugin and install all plugins
+	echo "Installing Vundle"
+	git clone ${VUNDLE_REPO} ~/.vim/bundle/Vundle.vim 2>/dev/null
+	vim -c PluginInstall q
+	# install ymcd
+	.vim/bundle/YouCompleteMe/install.py
+fi
+
+echo "Install nerd font (it takes a while...)? (y/n)"
+read RESPONSE
+
+if [[ "$RESPONSE" == "Y" ]] || [[ "$RESPONSE" == "y" ]]
+then
+	# install nerd font, best way, but SOO inefficient... it downloads 6 gb...
+	echo "Installing nerd font..."
+	git clone ${NERD_FONT_REPO} temp > /dev/null 
+	cd temp
+	./install.sh ${FONT} > /dev/null 
+	cd ..
+	rm -rf temp
+fi
 
 # create Projects directories
 mkdir -p ~/Projects/Personal ~/Projects/Work ~/Projects/Studies
+echo "Success!"
