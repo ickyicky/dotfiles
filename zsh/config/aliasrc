@@ -3,17 +3,14 @@ alias aliases='cat ~/.config/aliasrc'
 alias editalias='vim ~/.config/aliasrc'
 
 # just for security and for fun because i have typing -rf every time
-alias ccp='cp -rf'
-alias cp='cp -riv'
-alias mmv='mv -rf'
-alias mv='mv -riv'
-alias rrm='rm -rf'
-alias rm='rm -rIv'
+alias cp='cp -iv'
+alias mv='mv -iv'
+alias rm='rm -Iv'
 
 # program shortcuts
 alias dc='docker-compose'
 alias e='exit'
-alias grep='grep --color=auto -r'
+alias grep='grep --color=auto'
 alias killdocker='docker kill $(docker ps -q)'
 alias cleardocker='docker rmi $(docker images -q)'
 alias ls='exa --icons -g'
@@ -35,6 +32,7 @@ alias arr='cd ~/Projects/Work/arriva_server/server && make'
 alias bps='cd ~/Projects/Work/BPS && make'
 alias pub='cd ~/Projects/Work/publikator/'
 alias pubs='pub && cd publikator_server && make'
+alias pubc='pub && cd publikator_cruz && make'
 alias pubo='pub && cd publikator_oracle && make'
 alias pubb='pub && cd publikator_bps && make'
 
@@ -43,3 +41,6 @@ alias my='cd ~/Projects/Personal'
 
 # Studies
 alias stud='cd ~/Projects/Studies'
+
+# FUN
+alias rfortune='fortune | cowsay -f $(exa /usr/share/cows | shuf -n 1) | lolcat'
