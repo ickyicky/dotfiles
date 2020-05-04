@@ -35,6 +35,7 @@ alias pubs='pub && cd publikator_server && make'
 alias pubc='pub && cd publikator_cruz && make'
 alias pubo='pub && cd publikator_oracle && make'
 alias pubb='pub && cd publikator_bps && make'
+alias ar='cd ~/Projects/Work/arriva_server/server && make'
 
 # Personal
 alias my='cd ~/Projects/Personal'
