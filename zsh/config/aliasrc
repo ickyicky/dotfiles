@@ -12,18 +12,16 @@ alias dc='docker-compose'
 alias e='exit'
 alias grep='grep --color=auto'
 alias killdocker='docker kill $(docker ps -q)'
-alias cleardocker='docker rmi $(docker images -q)'
+alias cleardocker='docker system prune'
 alias ls='exa --icons -g'
 alias ll='ls -lh'
+alias lls='ls -lhrs modified'
 alias la='ls -a'
 alias lla='ls -lha'
 alias l='ls'
 alias vim='nvim'
 alias py='python'
 alias ipy='ipython'
-alias f="firefox"
-alias netflix="firefox netflix.com"
-alias c="chromium"
 
 # Work
 alias work='cd ~/Projects/Work'
