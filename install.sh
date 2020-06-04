@@ -77,6 +77,7 @@ then
 	zsh
 	exa
 	cmake
+	neofetch
 	"
 	
 	PIP_PACKAGES="pynvim
