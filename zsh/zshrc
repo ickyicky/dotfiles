@@ -84,6 +84,7 @@ bindkey -M menuselect 'j' vi-down-line-or-history
 bindkey -v '^?' backward-delete-char
 # Fix backspace bug when switching modes
 bindkey "^?" backward-delete-char
+bindkey "^[[3~" delete-char
 
 export KEYTIMEOUT=1
 
@@ -147,7 +148,7 @@ bindkey '\eOF'  end-of-line
 [ -f "$HOME/.config/shortcutrc" ] && source "$HOME/.config/shortcutrc"
 [ -f "$HOME/.config/aliasrc" ] && source "$HOME/.config/aliasrc"
 
-export EDITOR=vim
+export EDITOR=nvim
 
 ex ()
 {
