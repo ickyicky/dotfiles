@@ -32,6 +32,7 @@ filetype plugin indent on    " required
 " Specify areas where screen splits
 set splitbelow
 set splitright
+set mouse=a
 
 " Enable folding
 set foldmethod=indent
