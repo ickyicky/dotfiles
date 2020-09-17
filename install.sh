@@ -56,7 +56,9 @@ then
 	elif [[ "$DISTRO" == "MANJARO" ]] || [[ "$DISTRO" == "ARCH" ]] || [[ "$DISTRO" == "MANJAROLINUX" ]]
 	then
 		PKGMAN="sudo pacman -S --noconfirm"
-		ADDITIONAL_PACKAGES="xclip"
+		ADDITIONAL_PACKAGES="xclip
+		gconf
+		base-devel"
 	elif [[ "$DISTRO" == "CENTOS" ]] || [[ "$DISTRO" == "FEDORA" ]] || [[ "${DISTRO}" == "RHEL" ]]
 	then
 		PKGMAN="sudo yum install -y"
@@ -95,7 +97,7 @@ then
 	for PACKAGE in ${PIP_PACKAGES}
 	do
 		echo "Installing ${PACKAGE}..."
-		sudo pip3 ${PACKAGE} > /dev/null
+		sudo pip3 install ${PACKAGE}
 	done
 fi
 
@@ -137,9 +139,9 @@ then
 	# clone vundle vim plugin and install all plugins
 	echo "Installing Vundle"
 	git clone ${VUNDLE_REPO} ~/.vim/bundle/Vundle.vim 2>/dev/null
-	vim -c PluginInstall q
+	nvim -c PluginInstall q
 	# install ymcd
-	.vim/bundle/YouCompleteMe/install.py
+	~/.vim/bundle/YouCompleteMe/install.py
 fi
 
 echo "Install nerd font (it takes a while...)? (y/n)"
@@ -159,3 +161,14 @@ fi
 # create Projects directories
 mkdir -p ~/Projects/Personal ~/Projects/Work ~/Projects/Studies
 echo "Success!"
+
+echo "Install gnome-terminal theme(requires cerating one custom profile before)? (y/n)"
+read RESPONSE
+
+if [[ "$RESPONSE" == "Y" ]] || [[ "$RESPONSE" == "y" ]]
+then
+	git clone https://github.com/aaron-williamson/base16-gnome-terminal.git ~/.config/base16-gnome-terminal
+	export GCONFTOOL="gconftool-2"
+	echo "Apply gnome terminal afterwards from settings-profiles"
+	source ~/.config/base16-gnome-terminal/color-scripts/base16-ocean-256.sh
+fi
