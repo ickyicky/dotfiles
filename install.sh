@@ -88,14 +88,14 @@ then
 	for PACKAGE in ${PACKAGES}
 	do
 		echo "Installing ${PACKAGE}..."
-		${PKGMAN} ${PACKAGE} > /dev/null
+		${PKGMAN} ${PACKAGE}
 	done
 	
 	# install pip packages
 	for PACKAGE in ${PIP_PACKAGES}
 	do
 		echo "Installing ${PACKAGE}..."
-		sudo pip3 ${PACKAGE} > /dev/null
+		sudo pip3 install ${PACKAGE} > /dev/null
 	done
 fi
 
