@@ -38,6 +38,15 @@ alias ar='cd ~/Projects/Work/arriva_server/server && make'
 # Personal
 alias my='cd ~/Projects/Personal'
 
+# Passthrough
+alias startwin='sudo bash -c "echo 8192 > /proc/sys/vm/nr_hugepages; grep HugePages /proc/meminfo; virsh start win10"'
+alias sw='startwin'
+alias stopwin='sudo bash -c "echo 0 > /proc/sys/vm/nr_hugepages; grep HugePages /proc/meminfo;"'
+alias ssw='stopwin'
+alias cck='sudo bash -c "grep HugePages /proc/meminfo;"'
+alias looking-glass-win='looking-glass-client -s -a'
+alias lg='looking-glass-win'
+
 # Studies
 alias stud='cd ~/Projects/Studies'
 alias eng='stud && cd eng'
