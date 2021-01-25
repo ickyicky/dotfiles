@@ -97,11 +97,7 @@ then
 	for PACKAGE in ${PIP_PACKAGES}
 	do
 		echo "Installing ${PACKAGE}..."
-<<<<<<< HEAD
-		sudo pip3 install ${PACKAGE} > /dev/null
-=======
 		sudo pip3 install ${PACKAGE}
->>>>>>> 1df26df1b4cd2a97ede0ab0f94864953fc602b6d
 	done
 fi
 
